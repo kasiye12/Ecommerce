@@ -7,7 +7,6 @@
 <div class="container my-5">
     <div class="row">
         <h3> Welcome <span class="text-captalize">{{request.user}}</span></h3>
-    
          <div class="col-sm-2 border-end">
             <ul class="list-unstyled">
                <li class="d-grid"><a href="{% url 'profile' %}" class="btn btn-primary">Profile</a></li>
@@ -30,9 +29,9 @@
                     <p>City: {{ ad.city }}</p>
                     <p>State: {{ ad.state }}</p>
                     <p>Zip code: {{ ad.zipcode }}</p>
-                    {% comment %} <p class="text-danger">
+                     <p class="text-danger">
                         <a href="{% url 'updateAddress' pk=ad.id %}" type="button" class="btn btn-success">Update</a>
-                    </p>  {% endcomment %}
+                    </p> 
                 </div>
             </div>
         </div>
