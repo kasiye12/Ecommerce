@@ -1,0 +1,35 @@
+{% extends "app/base.html" %}
+{% load static %}
+{% block title %}update Address{% endblock title %}
+
+{% block main-content %}
+    <div class="row">
+        <h3> Wellcome <span class="text-captalize">{{request.user}}</span></h3>
+    </div>
+    <div class="container my-5">
+        <form action="" method="post">
+            {% csrf_token %}
+            {% for fm in form %}
+                <div class="mb-3">
+                    <label for="{{ fm.id_for_label }}">{{ fm.label }}</label>
+                    {{ fm }}
+                    {% if fm.errors %}
+                        <div class="alert alert-danger">
+                            {% for error in fm.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Update Address</button>
+            <a href="{% url 'address' %}" class="btn btn-danger">Back to Profile</a>
+            {% if messages %}
+                {% for msg in messages %}
+                    <div class="alert alert-{{ msg.tags }}" role="alert">
+                        {{ msg }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </form>
+{% endblock main-content %}

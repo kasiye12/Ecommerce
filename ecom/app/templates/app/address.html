@@ -9,17 +9,17 @@
         <h3> Welcome <span class="text-captalize">{{request.user}}</span></h3>
          <div class="col-sm-2 border-end">
             <ul class="list-unstyled">
-               <li class="d-grid"><a href="{% url 'profile' %}" class="btn btn-primary">Profile</a></li>
-               <br>
+               <li class="d-grid"><a href="{% url 'profile' %}" class="btn">Profile</a></li>
+               
                <li class="d-grid"><a href="{% url 'address' %}" class="btn btn-primary">Address</a></li>
            </ul>
          </div>
-    </div>
-<div class="col-sm-8 offset-sm-1">
+
+ <div class="col-sm-8 offset-sm-1">
       <div class="row">
         {% for ad in add %}
-        <div class="col-sm-4">
-            <div class="card-m-2">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+            <div class="card m-2">
                 <div class="card-body"> 
                     
                     <h3>Address {{ forloop.counter }}</h3>
@@ -29,8 +29,8 @@
                     <p>City: {{ ad.city }}</p>
                     <p>State: {{ ad.state }}</p>
                     <p>Zip code: {{ ad.zipcode }}</p>
-                     <p class="text-danger">
-                        <a href="{% url 'updateAddress' pk=ad.id %}" type="button" class="btn btn-success">Update</a>
+                    <p class="text-center">
+                        <a href="{% url 'UpdateAddress' pk=ad.id %}" type="button" class="btn btn-success">Update</a> 
                     </p> 
                 </div>
             </div>
