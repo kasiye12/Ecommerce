@@ -2,12 +2,14 @@
 from django.db.models import Count
 from django.shortcuts import render
 from django.views import View  # Corrected import of View
+from django.http import JsonResponse
 from .models import Cart, Product
 from .forms import CustomerProfileForm, CustomerRegistrationForm, Customer
 from . import views
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from .models import Customer
+from django.db.models import Q
 
 
 
@@ -123,3 +125,63 @@ def show_cart(request):
         amount = amount + value
         totalamount = amount + 40
     return render(request, 'app/addtocart.html',locals())
+
+def plus_cart(request):
+    if request.method == 'GET':
+        prod_id= request.GET['prod_id']
+        c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
+        c.quantity += 1
+        c.save()
+        user = request.user
+        cart = Cart.objects.filter(user=user)
+        amount = 0
+        for p in cart:
+            value = p.quantity * p.product.discounted_price
+            amount = amount + value
+        totalamount = amount + 40
+        data={ 
+            'quantity': c.quantity,
+            'amount': amount,
+            'totalamount': totalamount
+        }
+        return JsonResponse(data)
+    
+
+def minus_cart(request):
+    if request.method == 'GET':
+        prod_id= request.GET['prod_id']
+        c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
+        c.quantity -= 1
+        c.save()
+        user = request.user
+        cart = Cart.objects.filter(user=user)
+        amount = 0
+        for p in cart:
+            value = p.quantity * p.product.discounted_price
+            amount = amount + value
+        totalamount = amount + 40
+        data={ 
+            'quantity': c.quantity,
+            'amount': amount,
+            'totalamount': totalamount
+        }
+        return JsonResponse(data)
+
+def remove_cart(request):
+    if request.method == 'GET':
+        prod_id= request.GET['prod_id']
+        c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
+        c.delete()
+        user = request.user
+        cart = Cart.objects.filter(user=user)
+        amount = 0
+        for p in cart:
+            value = p.quantity * p.product.discounted_price
+            amount = amount + value
+        totalamount = amount + 40
+        data={ 
+            'amount': amount,
+            'totalamount': totalamount
+        }
+        return JsonResponse(data)
+    
