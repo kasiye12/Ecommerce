@@ -1,0 +1,101 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Buy Now{% endblock title %}
+{% block main-content %}
+<div class="container">
+    {% if messages %}
+        {% for msg in messages %}
+            <div class="alert alert-danger" role="alert">
+                {{ msg }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row mt-5">
+        <div class="col-sm-6">
+            <h4>Order Summary</h4>
+            <hr>
+            {% for item in cart_items %}
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5>Product: {{ item.product.title }}</h5>
+                        <p>Quantity: {{ item.quantity }}</p>
+                        <p class="fw-bold">Price: {{ item.product.discounted_price }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+                <p class="fw-bold"> Total Cost + Rs.40 = {{ totalamount }} </p>
+                <small>Term and Condition: Loren ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</small>
+            </div>
+            <div class="col-sm-4 offset-sm-1">
+                <h4>Select Shipping Address</h4>
+                <hr>
+                <form method="post" id="myform">
+                    {% csrf_token %}
+                    {% for ad in add %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5>{{ ad.name }}</h5>
+                                <p>Mobile: {{ ad.mobile }}</p>
+                                <p>Address: {{ ad.locality }} {{ ad.city }} {{ ad.state }} {{ ad.zipcode }}</p>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="radio" name="custid" id="custadd{{ forloop.counter }}" value="{{ ad.id }}">
+                                    <label class="form-check-label fw-bold" for="custadd{{ forloop.counter }}">
+                                        Address {{ forloop.counter }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                
+                    <div class="form-check mb-3">
+                        <label for="totalamount" class="form-label">Total Amount</label>
+                        <input type="number" id="totalamount" class="form-control" name="totalamount" value="{{ totalamount }}" readonly>
+                    </div>
+                
+                    <div class="text-end">
+                        <button id="rzp-button1" type="submit" class="btn btn-warning mt-3 px-5 fw-bold">Payment</button>
+                    </div>
+                </form>
+                
+                        </div>
+                    </div>
+                </div>
+                <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+                
+                        
+{% endblock main-content %}
+
+{% block payment-gateway %}
+<script>
+var options = {
+    "key": "rzp_test_2TUHCJNGDCOBWW", // Enter the Key ID generated from the Dashboard
+    "amount": "{{ totalamount }}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise or ₹500.
+    "currency": "BIRR",
+    "name": "Kasiye",
+    "description": "Purchese Product",
+    "order_id": "{{ order_id }}", // Pass the `id` obtained in the previous step
+    "handler": function (response){
+        console.log("success")
+        var form = document.getElementById('myform');
+        {% comment %} alert(response.razorpay_payment_id);
+        alert(response.razorpay_order_id);
+        alert(response.razorpay_signature)
+        document.getElementById('myform').submit(); {% endcomment %}
+        window.location.href = 'https://localhost:8000/paymentdone?order_id =${response.razorpay_payment_id}&payment_id=${response.razorpay_payment_id}&cust_id=${form.elementse["custid"].value}'   
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+}
+    var rzp = new Razorpay(options);
+    rzp.on('payment.failed', function (response){
+        alert(response.error.dercription);
+    });
+    document.getElementById('rzp-button1').onclick = function(e){
+        e.preventDefault();
+        rzp.open();
+    }
+    
+</script>
+{% endblock payment-gateway %}
