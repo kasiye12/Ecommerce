@@ -145,3 +145,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+
+RAZOR_KEY_SECRET = "pay_EDNBKIP31Y4jl8"
+RAZOR_KEY_ID = "order_DBJKIP31Y4jl8"   
+  # or rzp_live_...

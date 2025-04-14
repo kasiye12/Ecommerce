@@ -69,19 +69,19 @@
 {% block payment-gateway %}
 <script>
 var options = {
-    "key": "rzp_test_2TUHCJNGDCOBWW", // Enter the Key ID generated from the Dashboard
-    "amount": "{{ totalamount }}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise or ₹500.
-    "currency": "BIRR",
-    "name": "Kasiye",
+    "key": "rzp_test_LxRqAytA5m1RfA", // Enter the Key ID generated from the Dashboard
+    "amount": "{{ razoramount }}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise or ₹500.
+    "currency": "INR",
+    "name": "neel Products",
     "description": "Purchese Product",
     "order_id": "{{ order_id }}", // Pass the `id` obtained in the previous step
     "handler": function (response){
         console.log("success")
         var form = document.getElementById('myform');
-        {% comment %} alert(response.razorpay_payment_id);
-        alert(response.razorpay_order_id);
-        alert(response.razorpay_signature)
-        document.getElementById('myform').submit(); {% endcomment %}
+        //alert(response.razorpay_payment_id);
+        //alert(response.razorpay_order_id);
+       //alert(response.razorpay_signature)
+        //document.getElementById('myform').submit();
         window.location.href = 'https://localhost:8000/paymentdone?order_id =${response.razorpay_payment_id}&payment_id=${response.razorpay_payment_id}&cust_id=${form.elementse["custid"].value}'   
     },
     "theme": {
@@ -97,5 +97,6 @@ var options = {
         rzp.open();
     }
     
+    
 </script>
-{% endblock payment-gateway %}
+{% endblock payment-gateway %} 

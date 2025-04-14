@@ -3,6 +3,8 @@ from django.db.models import Count
 from django.shortcuts import render
 from django.views import View  # Corrected import of View
 from django.http import JsonResponse
+import razorpay
+from django.conf import settings
 from .models import Cart, Product
 from .forms import CustomerProfileForm, CustomerRegistrationForm, Customer
 from . import views
@@ -10,7 +12,6 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from .models import Customer
 from django.db.models import Q
-
 
 
 
@@ -135,10 +136,31 @@ class checkout(View):
         for p in cart_items:
             value = p.quantity * p.product.discounted_price
             famount = famount + value
-            totalamount = famount + 40
-        return render(request, 'app/checkout.html', locals())
+        totalamount = famount + 40
+        razoramount = int(totalamount * 100)
+        client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+        data = {'amount': razoramount, 'currency': 'INR', 'receipt': 'order_rcptid_12'}
+        # payment_response = client.order.create(data=data)
+        # print(payment_response)
+        # order_id = payment_response['id']
+        # order_status = payment_response['status']
+        # if order_status == 'created':
+        #     payment = razorpay.Payment(user=user, 
+        #     amount=totalamount, 
+        #     telebir_order_id=order_id, 
+        #     telebir_payment_status=order_status)
+        #     payment.save()
+        #     messages.success(request, "Order Created Successfully")
 
-def plus_cart(request):
+
+        return render(request, 'app/checkout.html', locals())
+# def payment_done(request):
+#     order_id=request.GET.get('order_id')
+#     payment_id=request.GET.get('payment_id')
+#     cust_id=request.GET.get('cust_id')
+#     user = request.user
+   
+def pluscart(request):
     if request.method == 'GET':
         prod_id= request.GET['prod_id']
         c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
