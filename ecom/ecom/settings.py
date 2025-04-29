@@ -145,8 +145,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 LOGOUT_REDIRECT_URL = '/accounts/login/'
+LOGIN_URL = '/accounts/login/'  # or your custom login path
 
 
-RAZOR_KEY_SECRET = "pay_EDNBKIP31Y4jl8"
-RAZOR_KEY_ID = "order_DBJKIP31Y4jl8"   
+
+RAZOR_KEY_SECRET = "rzp_test_YourActualKeyID"
+RAZOR_KEY_ID = "yourActualKeySecret"   
   # or rzp_live_...

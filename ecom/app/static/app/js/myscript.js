@@ -21,6 +21,7 @@ $('#slider1, #slider2, #slider3').owlCarousel({
         }
     }
 })
+console.log("myscript.js loaded");
 
 // $('.plus-cart').click(function(){
 //     var id=$(this).attr("pid").toString();
@@ -94,32 +95,32 @@ $('.remove-cart').click(function(){
 })
 
 
-$('.plus-wishlist').click(function(){
-    var id=$(this).attr("pid").toString();
+$('.plus-wishlist').click(function () {
+    var id = $(this).attr("pid").toString();
     $.ajax({
-        type:"GET",
-        url:"/pluswishlist",
-        data:{
-            prod_id:id
+        type: "GET",
+        url: "/pluswishlist",
+        data: {
+            prod_id: id
         },
-        success:function(data){
-            //alert(data.message)
-            window.location.href = `http://localhost:8000/product-detail/${id}`
+        success: function (data) {
+            window.location.href = `http://localhost:8000/product-detail/${id}`;
+
         }
-    })
-})
+    });
+});
 
-
-$('.minus-wishlist').click(function(){
-    var id=$(this).attr("pid").toString();
+$('.minus-wishlist').click(function () {
+    var id = $(this).attr("pid").toString();
     $.ajax({
-        type:"GET",
-        url:"/minuswishlist",
-        data:{
-            prod_id:id
+        type: "GET",
+        url: "/minuswishlist",
+        data: {
+            prod_id: id
         },
-        success:function(data){
-            window.location.href = `http://localhost:8000/product-detail/${id}`
+        success: function (data) {
+            window.location.href = `http://localhost:8000/product-detail/${id}`;
+
         }
-    })
-})
+    });
+});

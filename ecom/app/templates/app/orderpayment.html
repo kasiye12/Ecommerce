@@ -22,11 +22,11 @@
                     <div class="card-body">
                         <h5>Product: {{ item.product.title }}</h5>
                         <p>Quantity: {{ item.quantity }}</p>
-                        <p class="fw-bold">Price: {{ item.product.discounted_price }}</p>
+                        <p class="fw-bold">Price: ₹{{ item.product.discounted_price }}</p>
                     </div>
                 </div>
             {% endfor %}
-            <p class="fw-bold"> Total Cost + Rs.40 = {{ totalamount }} </p>
+            <p class="fw-bold"> Total Cost + Rs.40 = ₹{{ totalamount }} </p>
             <small>
                 Terms and Conditions: Lorem ipsum dolor sit amet, consectetur adipiscing elit...
             </small>
@@ -66,20 +66,19 @@
         </div>
     </div>
 </div>
-
-<script src="https://checkout.stripe.com/v1/checkout.js"></script>
 {% endblock main-content %}
 
 {% block payment-gateway %}
+<script src="https://checkout.stripe.com/v1/checkout.js"></script>
 <script>
     var options = {
         "key": "rzp_test_YourActualKeyID", // Replace with your Razorpay Key ID
         "amount": "{{ razoramount }}", // Amount in paise
         "currency": "INR",
-        "name": "neel Products",
+        "name": "Neel Products",
         "description": "Purchase Product",
         "order_id": "{{ order_id }}", // Order ID from backend
-        "handler": function (response){
+        "handler": function (response) {
             var form = document.getElementById('myform');
             const custid = document.querySelector('input[name="custid"]:checked')?.value;
             if (!custid) {
@@ -96,11 +95,11 @@
 
     var rzp = new Razorpay(options);
 
-    rzp.on('payment.failed', function (response){
+    rzp.on('payment.failed', function (response) {
         alert(response.error.description);
     });
 
-    document.getElementById('rzp-button1').onclick = function(e){
+    document.getElementById('rzp-button1').onclick = function(e) {
         e.preventDefault();
         rzp.open();
     };

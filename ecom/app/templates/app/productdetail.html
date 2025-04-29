@@ -1,30 +1,54 @@
 {% extends "app/base.html" %}
 {% load static %}
-{% block title %}Category{% endblock title %}
+{% block title %}{{ product.title }} - Product Details{% endblock %}
 
 {% block main-content %}
-{% comment %} <h1> Product Detail {{product}}<h1> {% endcomment %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <img src="{{product.product_image.url}}" alt="Product Image" class="img-fluid">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 mb-4">
+            <!-- Product Image -->
+            <img src="{{ product.product_image.url }}" alt="{{ product.title }} Image" class="img-fluid rounded shadow-lg">
         </div>
-        <div class="productdetail col-lg-5">
-            <h1 style="font-family: georgia; font-size: 50px;">{{product.title}}</h1>
-           <br><h4>Product features</h4>
-            <ul class="fs-5" style="font-family: randhani;">
-              <li>{{product.description}}</li>
-               <br><h5> Rs.{{product.discounted_price}}</h5>
-            <p><small class="text-decoration-line-through text-muted fs-5 color:red"><del>Rs. {{product.selling_price}}/.</small></del></p>
-            
-                <form action="/add-to-cart" class="d-inline">
-                    <input type="hidden" name="prod_id" value="{{product.id}}" />
-                    <button type="submit" class="btn btn-primary shadow col-md-6" px-5 py-2>Add to Cart</button>
-                </form>
-                <a href="{% url 'showcart' %}" class="btn btn-warning shadow px-5 py-2">Buy Now</a>
-            
-     
+        <div class="col-lg-5">
+            <div class="product-details p-4 bg-light rounded shadow-sm">
+                <h1 class="text-center text-uppercase fw-bold mb-4" style="font-family: Georgia;">{{ product.title }}</h1>
+
+                <!-- Product Features -->
+                <h4 class="fs-4">Product Features</h4>
+                <ul class="list-unstyled mb-4" style="font-family: Randhani;">
+                    <li class="fs-5">{{ product.description }}</li>
+                </ul>
+
+                <!-- Price Details -->
+                <div class="mb-3">
+                    <h5 class="fs-4 text-primary">Rs. {{ product.discounted_price }}</h5>
+                    <p class="text-muted text-decoration-line-through fs-6">Rs. {{ product.selling_price }}</p>
+                </div>
+
+                <!-- Actions -->
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                    <!-- Add to Cart Button -->
+                    <form action="/add-to-cart" class="mb-3 mb-md-0">
+                        {% csrf_token %}
+                        <input type="hidden" name="prod_id" value="{{ product.id }}" />
+                        <button type="submit" class="btn btn-primary btn-lg shadow w-100 w-md-auto mb-2 mb-md-0">Cart</button>
+                    </form>
+                    {% comment %} <form action="/add-to-cart" class="mb-3 mb-md-0" >
+                        <input type="hidden" name="prod_id" value="{{product.id}}" />
+                        <button type="submit" class="btn btn-primary shadow col-md-6" px-5 py-2>Add to Cart</button>
+                    </form> {% endcomment %}
+                    <!-- Buy Now Button -->
+                    <a href="{% url 'showcart' %}" class="btn btn-warning btn-lg shadow w-100 w-md-auto mb-2 mb-md-0 ms-md-3">Buy Now</a>
+
+                    <!-- Wishlist Buttons -->
+                    {% if wishlist %}
+                        <a pid="{{ product.id }}" class="minus-wishlist btn btn-danger btn-lg shadow w-100 w-md-auto ms-md-3"><i class="fas fa-heart fa-lg"></i> </a>
+                    {% else %}
+                        <a pid="{{ product.id }}" class="plus-wishlist btn btn-success btn-lg shadow w-100 w-md-auto ms-md-3"><i class="fas fa-heart fa-lg"></i> </a>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
-</div> 
+</div>
 {% endblock main-content %}

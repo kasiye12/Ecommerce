@@ -1,0 +1,74 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Buy Now{% endblock title %}
+
+{% block main-content %}
+<style>
+  .glass-card {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 1rem;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  .glass-card:hover {
+    transform: translateY(-3px);
+  }
+  .progress-sm {
+    height: 8px;
+  }
+</style>
+
+<div class="container my-5">
+  <div class="row">
+    <h3 class="mb-4 fw-bold text-primary">Welcome, <span class="text-capitalize">{{ request.user }}</span></h3>
+
+    <div class="col-md-3 mb-4">
+      <div class="d-grid gap-2">
+        <a href="{% url 'orders' %}" class="btn btn-outline-primary shadow-sm">
+          <i class="bi bi-box"></i> View My Orders
+        </a>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      {% for op in order_placed %}
+      <div class="glass-card p-4 mb-4">
+        <div class="row align-items-center">
+          <div class="col-md-2 text-center">
+            <img src="{{ op.product.product_image.url }}" class="img-fluid rounded shadow-sm" style="max-height: 100px;" alt="{{ op.product.title }}">
+          </div>
+          <div class="col-md-6">
+            <h5 class="fw-semibold mb-1">{{ op.product.title }}</h5>
+            <div class="text-muted small">Quantity: {{ op.quantity }}</div>
+            <div class="fw-bold text-success">Rs. {{ op.total_cost }}</div>
+          </div>
+          <div class="col-md-4">
+            <div class="mb-1 fw-medium text-dark">Status: <span class="text-info">{{ op.status }}</span></div>
+            <div class="progress progress-sm">
+              {% if op.status == 'Pending' %}
+                <div class="progress-bar bg-secondary" style="width: 10%"></div>
+              {% elif op.status == 'Accepted' %}
+                <div class="progress-bar bg-primary" style="width: 20%"></div>
+              {% elif op.status == 'Packed' %}
+                <div class="progress-bar bg-info" style="width: 40%"></div>
+              {% elif op.status == 'On the way' %}
+                <div class="progress-bar bg-warning" style="width: 70%"></div>
+              {% elif op.status == 'Delivered' %}
+                <div class="progress-bar bg-success" style="width: 100%"></div>
+              {% elif op.status == 'Cancel' %}
+                <div class="progress-bar bg-danger" style="width: 100%"></div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="alert alert-info shadow-sm">No orders yet. Start shopping now!</div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock main-content %}

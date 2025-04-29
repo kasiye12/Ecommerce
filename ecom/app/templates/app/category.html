@@ -4,33 +4,45 @@
 
 {% block main-content %}
 <div class="container my-5">
-    <div class="row">
-        <div class="col-sm-3">
-            <div class="list-group">
-            {% for val in title %}
-            <a href="{% url 'category-title' val.title %}" class="list-group-item list-group-item-action">
-            {{ val.title }}</a>
-            {% endfor %}
-            </div>
-        </div>
-        <div class="col-sm-9">
-            <div class="row">
-                {% for prod in product %}
-                <div class="col text-center mb-4">
-                    <a href="{% url 'product-detail' prod.id %}" class="btn">
-                    <div>
-                        <img src="{{ prod.product_image.url }}" width="300px" height="200px"/>
-                        <div class="fw-bold">{{ prod.title }}</div>
-                        <div class="fw-bold text-danger">
-                            Rs.{{ prod.discounted_price }}
-                            <small class="text-light text-decoration-line-through">{{ prod.selling_price }}</small>
-                        </div>  
-                    </div>
-                 </a>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
+  <div class="row">
+    <!-- Category Sidebar -->
+    <div class="col-md-3 mb-4">
+      <div class="list-group shadow-sm">
+        <h5 class="list-group-item list-group-item-secondary text-center fw-bold">Categories</h5>
+        {% for val in title %}
+        <a href="{% url 'category-title' val.title %}" class="list-group-item list-group-item-action">
+          {{ val.title }}
+        </a>
+        {% endfor %}
+      </div>
     </div>
+
+    <!-- Product Display -->
+    <div class="col-md-9">
+      <div class="row">
+        {% for prod in product %}
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="card h-100 shadow-sm border-0">
+            <a href="{% url 'product-detail' prod.id %}" class="text-decoration-none text-dark">
+              <img src="{{ prod.product_image.url }}" class="card-img-top" alt="{{ prod.title }}" style="height: 200px; object-fit: cover;">
+              <div class="card-body text-center">
+                <h5 class="card-title fw-semibold">{{ prod.title }}</h5>
+                <p class="text-danger fs-5 mb-1">
+                  Rs.{{ prod.discounted_price }}
+                  <small class="text-muted text-decoration-line-through fs-6">{{ prod.selling_price }}</small>
+                </p>
+                <button class="btn btn-outline-primary btn-sm mt-2">View Details</button>
+              </div>
+            </a>
+          </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center mt-5">
+          <h4 class="text-muted">No products available in this category.</h4>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock main-content %}
