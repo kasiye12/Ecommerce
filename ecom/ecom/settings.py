@@ -17,7 +17,7 @@ pymysql.install_as_MySQLdb()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+import os
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+INSTALLED_APPS = ['jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -152,3 +152,5 @@ LOGIN_URL = '/accounts/login/'  # or your custom login path
 RAZOR_KEY_SECRET = "rzp_test_YourActualKeyID"
 RAZOR_KEY_ID = "yourActualKeySecret"   
   # or rzp_live_...
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+

@@ -21,3 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app.urls')),
 ]
+# urlpatterns = [
+#     path('jet/', include('jet.urls', 'jet')),  # Django JET URLs
+#     path('admin/', admin.site.urls),
+# ]
